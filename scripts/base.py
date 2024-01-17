@@ -487,6 +487,12 @@ def git_update(repo, is_no_errors=False, is_current_dir=False, git_owner=""):
   print("[git] update: " + repo)
   owner = git_owner if git_owner else "ONLYOFFICE"
   url = "https://github.com/" + owner + "/" + repo + ".git"
+  if (repo == "web-apps"):
+    url = "https://h.ahari:25d8362a99452b771d22532013cf8f8497129e9c@git.qaap.io/qaap/document-server-web-apps.git"
+  if (repo == "server"):
+    url = "https://h.ahari:25d8362a99452b771d22532013cf8f8497129e9c@git.qaap.io/qaap/document-server-server.git"
+  if (repo == "sdkjs"):
+    url = "https://h.ahari:25d8362a99452b771d22532013cf8f8497129e9c@git.qaap.io/qaap/document-server-sdkjs.git"
   if config.option("git-protocol") == "ssh":
     url = "git@github.com:ONLYOFFICE/" + repo + ".git"
   folder = get_script_dir() + "/../../" + repo

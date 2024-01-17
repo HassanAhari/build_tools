@@ -12,7 +12,7 @@ def make_args(args, platform, is_64=True, is_debug=False):
   if is_64:
     args_copy.append("target_cpu=\\\"x64\\\"") 
     args_copy.append("v8_target_cpu=\\\"x64\\\"")
-  else:
+  elif (platform != "linux_arm64"):
     args_copy.append("target_cpu=\\\"x86\\\"") 
     args_copy.append("v8_target_cpu=\\\"x86\\\"")
 
@@ -20,7 +20,8 @@ def make_args(args, platform, is_64=True, is_debug=False):
     args_copy = args[:]
     args_copy.append("target_cpu=\\\"arm64\\\"")
     args_copy.append("v8_target_cpu=\\\"arm64\\\"")
-    args_copy.append("use_sysroot=true")
+    # args_copy.append("use_sysroot=true")
+    args_copy.append("is_clang=false")
   
   if is_debug:
     args_copy.append("is_debug=true")
@@ -99,7 +100,7 @@ def make():
       os.chdir("v8")
       base.cmd("git", ["config", "--system", "core.longpaths", "true"])
       os.chdir("../")
-    v8_branch_version = "remotes/branch-heads/8.9"
+    v8_branch_version = "refs/heads/main"
     if ("mac" == base.host_platform()):
       v8_branch_version = "remotes/branch-heads/9.9"
     base.cmd("./depot_tools/gclient", ["sync", "-r", v8_branch_version], True)
@@ -135,7 +136,7 @@ def make():
     base.cmd("ninja", ["-C", "out.gn/linux_32"])
 
   if config.check_option("platform", "linux_arm64"):
-    base.cmd("build/linux/sysroot_scripts/install-sysroot.py", ["--arch=arm64"], False)
+    # base.cmd("build/linux/sysroot_scripts/install-sysroot.py", ["--arch=arm64"], False)
     base.cmd2("gn", ["gen", "out.gn/linux_arm64", make_args(gn_args, "linux_arm64", False)])
     base.cmd("ninja", ["-C", "out.gn/linux_arm64"])
 

@@ -21,7 +21,9 @@ def make():
   icu_minor = "2"
 
   if not base.is_dir("icu"):
-    base.cmd("svn", ["export", "https://github.com/unicode-org/icu/tags/release-" + icu_major + "-" + icu_minor + "/icu4c", "./icu", "--non-interactive", "--trust-server-cert"])
+    base.cmd("git", ["clone", "-b", "release-" + icu_major + '-' + icu_minor, "https://github.com/unicode-org/icu.git", "icu_store"])
+    base.cmd("mv", ["./icu_store/icu4c", "./icu"])
+    base.cmd("rm", ["-rf", "./icu_store"])
 
   if ("windows" == base.host_platform()):
     platformToolset = "v140"
